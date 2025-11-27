@@ -7,16 +7,17 @@ plt.style.use('seaborn-v0_8-whitegrid')
 try:
     anos = ['2023', '2024', '2025']
     dados_anuais = {}
+    total_vendas_anuais = []
 
     for ano in anos:
         df = pd.read_excel("vendas-roupas.xlsx", sheet_name=ano)
         df['Data'] = pd.to_datetime(df['Data'], errors='coerce')
         
         vendas = df.groupby(df['Data'].dt.month)['Quantidade Vendida'].sum()
-        
         dados_anuais[ano] = vendas.reindex(range(1, 13), fill_value=0)
+        total_vendas_anuais.append(vendas.sum())
 
-    fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(10, 18))
+    fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(10, 18))
     plt.subplots_adjust(hspace=0.4)
 
     meses_nomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
@@ -54,6 +55,32 @@ try:
                 fontweight='bold',
                 color='#333333'
             )
+    
+        ax_total = axes[3]
+        barras = ax_total.bar(
+        anos, 
+        total_vendas_anuais, 
+        color=cores, 
+        width=0.6
+    )
+    
+    ax_total.set_title("Total de Vendas por Ano (Comparativo)", fontsize=16, fontweight='bold')
+    ax_total.set_ylabel("Total Vendido")
+    ax_total.grid(axis='y', linestyle='--', alpha=0.6)
+    max_total = max(total_vendas_anuais)
+    ax_total.set_ylim(0, max_total * 1.15)
+
+    for barra in barras:
+        altura = barra.get_height()
+        ax_total.text(
+            barra.get_x() + barra.get_width() / 2,
+            altura + (max_total * 0.01),
+            f"{int(altura)}",
+            ha='center', 
+            va='bottom', 
+            fontsize=12, 
+            fontweight='bold'
+        )
 
     plt.show()
 
