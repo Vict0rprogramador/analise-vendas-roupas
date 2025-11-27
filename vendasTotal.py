@@ -8,10 +8,9 @@ try:
         "vendas-roupas.xlsx", 
         sheet_name="vendas")
     
-    # converte a coluna data de texto para uma data real
     df["Data"] = pd.to_datetime(df["Data"], errors="coerce")
+    
 
-    # Agrupa, soma e ordena do maior para o menor
     rank_tipo = df.groupby("Tipo de Roupa")["Quantidade Vendida"].sum().sort_values(ascending=False)
 
     rank_tamanho = df.groupby("Tamanho")["Quantidade Vendida"].sum().sort_values(ascending=False)
@@ -19,7 +18,7 @@ try:
     rank_cor = df.groupby("Cor")["Quantidade Vendida"].sum().sort_values(ascending=False)
 
     plt.style.use("seaborn-v0_8-whitegrid")
-    #plt.figure(figsize=(12, 8))  # define o tamanho da imagem do grafico
+
     fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(10, 18))
     plt.subplots_adjust(hspace=0.4)
 
