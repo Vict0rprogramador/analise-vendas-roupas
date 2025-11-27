@@ -1,11 +1,12 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 plt.style.use('seaborn-v0_8-whitegrid')
 
 try:
-
+    pasta_destino = "Vendas Anuais de cores"
 
     anos = ['2023', '2024', '2025']
     meses_nomes = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 
@@ -96,7 +97,14 @@ try:
 
         plt.ylim(0, quantidades.max() * 1.25)
 
+        if not os.path.exists(pasta_destino):
+            os.makedirs(pasta_destino)
+            print("pasta criada")
 
+        caminho_arquivo = os.path.join(pasta_destino, f"vendas_cores_{ano}.jpg")
+        plt.savefig(caminho_arquivo, bbox_inches="tight")
+        plt.close()
+        
     plt.figure(figsize=(10, 6))
     
     anos_labels = [d['Ano'] for d in vencedores_anuais]
@@ -133,7 +141,11 @@ try:
             f"{cor_nome}\n({int(qtd)})",
             ha='center', va='bottom', fontsize=12, fontweight='bold'
         )
-    plt.show()
+
+    caminho_arquivo = os.path.join(pasta_destino, "vendas_anuais_cores.jpg")
+    plt.savefig(caminho_arquivo, bbox_inches="tight")
+    plt.close()
+
 except Exception as e:
     print(f"Ocorreu um erro: {e}")
 # %%

@@ -1,10 +1,13 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 plt.style.use('seaborn-v0_8-whitegrid')
 
 try:
+    pasta_destino = "Vendas Anuais"
+
     anos = ['2023', '2024', '2025']
     dados_anuais = {}
     total_vendas_anuais = []
@@ -81,8 +84,13 @@ try:
             fontsize=12, 
             fontweight='bold'
         )
+    if not os.path.exists(pasta_destino):
+        os.makedirs(pasta_destino)
+        print("pasta criada")
 
-    plt.show()
+    caminho_arquivo = os.path.join(pasta_destino, "vendas_anuais.jpg")
+    plt.savefig(caminho_arquivo, bbox_inches="tight")
+    plt.close()
 
 except Exception as e:
     print(f"Ocorreu um erro: {e}")

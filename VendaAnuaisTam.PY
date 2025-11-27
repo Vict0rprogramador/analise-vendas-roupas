@@ -1,10 +1,13 @@
 # %%
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 plt.style.use('seaborn-v0_8-whitegrid')
 
 try:
+    pasta_destino = "Vendas Anuais de tamanhos"
+
     coluna_tamanho = 'Tamanho' 
 
     anos = ['2023', '2024', '2025']
@@ -84,7 +87,13 @@ try:
                     fontweight='bold',
                     color='black'
                 )
-        plt.show()
+        if not os.path.exists(pasta_destino):
+            os.makedirs(pasta_destino)
+            print("pasta criada")
+
+        caminho_arquivo = os.path.join(pasta_destino, f"tamanho_mais_vendido_por_mes_{ano}.jpg")
+        plt.savefig(caminho_arquivo, bbox_inches="tight")
+        plt.close()
 
         plt.figure(figsize=(10, 6))
 
@@ -114,7 +123,9 @@ try:
             f"Vencedor: {tam_nome}\n({int(qtd)} vendas)",
             ha='center', va='bottom', fontsize=12, fontweight='bold'
         )
-    plt.show()
+    caminho_arquivo = os.path.join(pasta_destino, "resumo_tamanho_mais_vendido_2023_2025.jpg")
+    plt.savefig(caminho_arquivo, bbox_inches="tight")
+    plt.close()
 
 except Exception as e:
     print(f"Ocorreu um erro: {e}")

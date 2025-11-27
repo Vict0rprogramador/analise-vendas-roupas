@@ -2,8 +2,11 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 try:
+    pasta_destino = "Vendas Totais"
+
     df = pd.read_excel(
         "vendas-roupas.xlsx", 
         sheet_name="vendas")
@@ -64,7 +67,14 @@ try:
             f"{int(bar.get_width())}",
             va="center", ha="left", fontsize=10
         )
-    plt.show()
+    if not os.path.exists(pasta_destino):
+        os.makedirs(pasta_destino)
+        print("pasta criada")
+    
+    caminho_arquivo = os.path.join(pasta_destino, "vendas_totais.jpg")
+    plt.savefig(caminho_arquivo, bbox_inches="tight")
+    plt.close()
+    
 except Exception as e:
     print(f"Ocorreu um erro inesperado: {e}")
     
